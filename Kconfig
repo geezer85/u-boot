@@ -56,6 +56,130 @@ config CC_OPTIMIZE_FOR_SIZE
 
 	  This option is enabled by default for U-Boot.
 
+config CC_COVERAGE
+	bool "Enable code coverage analysis"
+	depends on SANDBOX
+	help
+	  Enabling this option will pass "--coverage" to gcc to compile
+	  and link code instrumented for coverage analysis.
+
+config CC_HAS_ASM_INLINE
+	def_bool $(success,echo 'void foo(void) { asm inline (""); }' | $(CC) -x c - -c -o /dev/null)
+
+config DISTRO_DEFAULTS
+	bool "Select defaults suitable for booting general purpose Linux distributions"
+	select AUTO_COMPLETE
+	select CMDLINE_EDITING
+	select CMD_BOOTI if ARM64
+	select CMD_BOOTZ if ARM && !ARM64
+	select CMD_DHCP if CMD_NET
+	select CMD_ENV_EXISTS
+	select CMD_EXT2
+	select CMD_EXT4
+	select CMD_FAT
+	select CMD_FS_GENERIC
+	select CMD_PART if PARTITIONS
+	select CMD_PING if CMD_NET
+	select CMD_PXE if NET
+	select CMD_SYSBOOT
+	select ENV_VARS_UBOOT_CONFIG
+	select HUSH_PARSER
+	select SUPPORT_RAW_INITRD
+	select SYS_LONGHELP
+	imply CMD_MII if NET
+	imply USB_STORAGE
+	imply USE_BOOTCOMMAND
+	help
+	  Select this to enable various options and commands which are suitable
+	  for building u-boot for booting general purpose Linux distributions.
+
+config ENV_VARS_UBOOT_CONFIG
+	bool "Add arch, board, vendor and soc variables to default environment"
+	help
+	  Define this in order to add variables describing the
+	  U-Boot build configuration to the default environment.
+	  These will be named arch, cpu, board, vendor, and soc.
+	  Enabling this option will cause the following to be defined:
+	  - CONFIG_SYS_ARCH
+	  - CONFIG_SYS_CPU
+	  - CONFIG_SYS_BOARD
+	  - CONFIG_SYS_VENDOR
+	  - CONFIG_SYS_SOC
+
+config NR_DRAM_BANKS
+	int "Number of DRAM banks"
+	default 1 if ARCH_SUNXI || ARCH_OWL
+	default 4
+	help
+	  This defines the number of DRAM banks.
+
+config SYS_BOOT_GET_CMDLINE
+	bool "Enable kernel command line setup"
+	help
+	  Enables allocating and saving kernel cmdline in space between
+	  "bootm_low" and "bootm_low" + BOOTMAPSZ.
+
+config SYS_BOOT_GET_KBD
+	bool "Enable kernel board information setup"
+	help
+	  Enables allocating and saving a kernel copy of the bd_info in
+	  space between "bootm_low" and "bootm_low" + BOOTMAPSZ.
+
+config SYS_MALLOC_F
+	bool "Enable malloc() pool before relocation"
+	default y if DM
+
+	help
+	  Before relocation, memory is very limited on many platforms. Still,
+	  we can provide a small malloc() pool if needed. Driver model in
+	  particular needs this to operate, so that it can allocate the
+	  initial serial device and any others that are needed.
+
+config SYS_MALLOC_F_LEN
+	hex "Size of malloc() pool before relocation"
+	depends on SYS_MALLOC_F
+	default 0x1000 if AM33XX
+	default 0x2800 if SANDBOX
+	default 0x2000 if (ARCH_IMX8 || ARCH_IMX8M || ARCH_MX7 || \
+			   ARCH_MX7ULP || ARCH_MX6 || ARCH_MX5 || \
+			   ARCH_LS1012A || ARCH_LS1021A || ARCH_LS1043A || \
+			   ARCH_LS1046A || ARCH_QEMU)
+	default 0x400
+	help
+	  Before relocation, memory is very limited on many platforms. Still,
+	  we can provide a small malloc() pool if needed. Driver model in
+	  particular needs this to operate, so that it can allocate the
+	  initial serial device and any others that are needed.
+
+config SYS_MALLOC_LEN
+	hex "Define memory for Dynamic allocation"
+	depends on ARCH_ZYNQ || ARCH_VERSAL || ARCH_STM32MP || ARCH_ROCKCHIP
+	default 0x2000000 if ARCH_ROCKCHIP
+	help
+	  This defines memory to be allocated for Dynamic allocation
+	  TODO: Use for other architectures
+
+config SPL_SYS_MALLOC_F_LEN
+	hex "Size of malloc() pool in SPL before relocation"
+	depends on SYS_MALLOC_F && SPL
+	default 0x2800 if RCAR_GEN3
+	default SYS_MALLOC_F_LEN
+	help
+	  Before relocation, memory is very limited on many platforms. Still,
+	  we can provide a small malloc() pool if needed. Driver model in
+	  particular needs this to operate, so that it can allocate the
+	  initial serial device and any others that are needed.
+
+config TPL_SYS_MALLOC_F_LEN
+	hex "Size of malloc() pool in TPL before relocation"
+	depends on SYS_MALLOC_F && TPL
+	default SYS_MALLOC_F_LEN
+	help
+	  Before relocation, memory is very limited on many platforms. Still,
+	  we can provide a small malloc() pool if needed. Driver model in
+	  particular needs this to operate, so that it can allocate the
+	  initial serial device and any others that are needed.
+
 menuconfig EXPERT
         bool "Configure standard U-Boot features (expert users)"
         help
