@@ -64,7 +64,7 @@ config CC_COVERAGE
 	  and link code instrumented for coverage analysis.
 
 config CC_HAS_ASM_INLINE
-	def_bool $(success,echo 'void foo(void) { asm inline (""); }' | $(CC) -x c - -c -o /dev/null)
+	def_bool true
 
 config DISTRO_DEFAULTS
 	bool "Select defaults suitable for booting general purpose Linux distributions"
@@ -86,9 +86,9 @@ config DISTRO_DEFAULTS
 	select HUSH_PARSER
 	select SUPPORT_RAW_INITRD
 	select SYS_LONGHELP
-	imply CMD_MII if NET
-	imply USB_STORAGE
-	imply USE_BOOTCOMMAND
+	select CMD_MII if NET
+	select USB_STORAGE
+	select USE_BOOTCOMMAND
 	help
 	  Select this to enable various options and commands which are suitable
 	  for building u-boot for booting general purpose Linux distributions.

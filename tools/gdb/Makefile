@@ -34,7 +34,7 @@ endif
 #
 # Use native tools and options
 #
-HOST_EXTRACFLAGS := -I$(BFD_ROOT_DIR)/include -pedantic
+HOST_EXTRACFLAGS := -I$(BFD_ROOT_DIR)/include
 
 hostprogs-y := gdbsend gdbcont
 

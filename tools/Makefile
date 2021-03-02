@@ -35,19 +35,19 @@ hostprogs-$(CONFIG_SPL_GENERATE_ATMEL_PMECC_HEADER) += atmel_pmecc_params
 hostprogs-$(CONFIG_CMD_LICENSE) += bin2header
 hostprogs-$(CONFIG_LCD_LOGO) += bmp_logo
 hostprogs-$(CONFIG_VIDEO_LOGO) += bmp_logo
-HOSTCFLAGS_bmp_logo.o := -pedantic
+HOSTCFLAGS_bmp_logo.o :=
 
 hostprogs-$(CONFIG_BUILD_ENVCRC) += envcrc
 envcrc-objs := envcrc.o lib/crc32.o common/env_embedded.o lib/sha1.o
 
 hostprogs-$(CONFIG_CMD_NET) += gen_eth_addr
-HOSTCFLAGS_gen_eth_addr.o := -pedantic
+HOSTCFLAGS_gen_eth_addr.o :=
 
 hostprogs-$(CONFIG_CMD_LOADS) += img2srec
-HOSTCFLAGS_img2srec.o := -pedantic
+HOSTCFLAGS_img2srec.o :=
 
 hostprogs-$(CONFIG_XWAY_SWAP_BYTES) += xway-swap-bytes
-HOSTCFLAGS_xway-swap-bytes.o := -pedantic
+HOSTCFLAGS_xway-swap-bytes.o :=
 
 hostprogs-y += mkenvimage
 mkenvimage-objs := mkenvimage.o os_support.o lib/crc32.o
@@ -124,14 +124,14 @@ HOSTLOADLIBES_fit_check_sign := $(HOSTLOADLIBES_mkimage)
 
 hostprogs-$(CONFIG_EXYNOS5250) += mkexynosspl
 hostprogs-$(CONFIG_EXYNOS5420) += mkexynosspl
-HOSTCFLAGS_mkexynosspl.o := -pedantic
+HOSTCFLAGS_mkexynosspl.o :=
 
 ifdtool-objs := $(LIBFDT_OBJS) ifdtool.o
 hostprogs-$(CONFIG_X86) += ifdtool
 
 hostprogs-$(CONFIG_MX23) += mxsboot
 hostprogs-$(CONFIG_MX28) += mxsboot
-HOSTCFLAGS_mxsboot.o := -pedantic
+HOSTCFLAGS_mxsboot.o :=
 
 hostprogs-$(CONFIG_SUNXI) += mksunxiboot
 
@@ -140,7 +140,7 @@ hostprogs-$(CONFIG_SHA1_CHECK_UB_IMG) += ubsha1
 
 ubsha1-objs := os_support.o ubsha1.o lib/sha1.o
 
-HOSTCFLAGS_ubsha1.o := -pedantic
+HOSTCFLAGS_ubsha1.o :=
 
 hostprogs-$(CONFIG_KIRKWOOD) += kwboot
 hostprogs-$(CONFIG_ARMADA_XP) += kwboot
@@ -150,14 +150,14 @@ hostprogs-$(CONFIG_STATIC_RELA) += relocate-rela
 # We build some files with extra pedantic flags to try to minimize things
 # that won't build on some weird host compiler -- though there are lots of
 # exceptions for files that aren't complaint.
-HOSTCFLAGS_crc32.o := -pedantic
-HOSTCFLAGS_md5.o := -pedantic
-HOSTCFLAGS_sha1.o := -pedantic
-HOSTCFLAGS_sha256.o := -pedantic
+HOSTCFLAGS_crc32.o :=
+HOSTCFLAGS_md5.o :=
+HOSTCFLAGS_sha1.o :=
+HOSTCFLAGS_sha256.o :=
 
 # Don't build by default
 #hostprogs-$(CONFIG_PPC) += mpc86x_clk
-#HOSTCFLAGS_mpc86x_clk.o := -pedantic
+#HOSTCFLAGS_mpc86x_clk.o :=
 
 quiet_cmd_wrap = WRAP    $@
 cmd_wrap = echo "\#include <../$(patsubst $(obj)/%,%,$@)>" >$@
